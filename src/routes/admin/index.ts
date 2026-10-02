@@ -8,6 +8,7 @@ import { customersRouter } from "./customers";
 import { vendorsRouter } from "./vendors";
 import { salesRouter } from "./sales";
 import { stockRouter } from "./stock";
+import { accountRouter } from "./account";
 
 export const adminRouter = Router();
 
@@ -23,6 +24,7 @@ adminRouter.use("/customers", customersRouter);
 adminRouter.use("/vendors", vendorsRouter);
 adminRouter.use("/sales", salesRouter);
 adminRouter.use("/stock", stockRouter);
+adminRouter.use("/account", accountRouter);
 adminRouter.get("/more", (req, res) => {
   res.render("admin/more", { title: "More — Admin", active: "more" });
 });

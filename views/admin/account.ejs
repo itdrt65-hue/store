@@ -1,0 +1,40 @@
+<%- include('partials/header') %>
+
+<div class="admin-page-head">
+  <a href="/admin/more" class="admin-back-link"><%- include('partials/icon', { name: 'back' }) %>Back to more</a>
+  <h1>Account</h1>
+  <p>Change the username and password you use to log in.</p>
+</div>
+
+<% if (msg) { %>
+  <div class="admin-alert admin-alert-success"><%= msg %></div>
+<% } %>
+<% if (error) { %>
+  <div class="admin-alert admin-alert-error"><%= error %></div>
+<% } %>
+
+<div class="admin-panel admin-panel-narrow">
+  <form method="POST" action="/admin/account" class="admin-form">
+    <label>
+      Username
+      <input type="text" name="username" value="<%= username %>" autocomplete="username" required />
+    </label>
+    <label>
+      Current password
+      <input type="password" name="current" autocomplete="current-password" required />
+    </label>
+    <div class="admin-form-row">
+      <label>
+        New password
+        <input type="password" name="password" autocomplete="new-password" minlength="8" required />
+      </label>
+      <label>
+        Confirm new password
+        <input type="password" name="confirm" autocomplete="new-password" minlength="8" required />
+      </label>
+    </div>
+    <button type="submit" class="btn">Update login</button>
+  </form>
+</div>
+
+<%- include('partials/footer') %>

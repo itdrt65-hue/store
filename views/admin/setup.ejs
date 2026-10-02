@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body class="admin-body login-body">
+  <div class="login-shell">
+    <aside class="login-aside" aria-hidden="true">
+      <span class="admin-logo-mark"><%- include('partials/icon', { name: 'flame' }) %></span>
+      <div>
+        <p class="login-aside-title">Agrahari Gas</p>
+        <p class="login-aside-sub">Sales, stock and vendor limits for your shop, all in one place.</p>
+      </div>
+    </aside>
+    <main class="login-main">
+      <div class="login-card">
+        <h1>Set admin login</h1>
+
+        <% if (!enabled) { %>
+          <p class="login-sub">Setup is turned off. Set the <code>ADMIN_SETUP_TOKEN</code> environment variable on the server and redeploy to enable it.</p>
+        <% } else { %>
+          <p class="login-sub">Choose the username and password for the admin panel. You need the setup token from your server settings.</p>
+
+          <% if (error) { %>
+            <div class="admin-alert admin-alert-error" role="alert"><%= error %></div>
+          <% } %>
+
+          <form method="POST" action="/admin/setup" class="admin-form">
+            <label>
+              Setup token
+              <input type="password" name="token" autocomplete="off" required autofocus />
+            </label>
+            <label>
+              Username
+              <input type="text" name="username" value="<%= username %>" autocomplete="username" required />
+            </label>
+            <label>
+              New password
+              <input type="password" name="password" autocomplete="new-password" minlength="8" required />
+            </label>
+            <label>
+              Confirm password
+              <input type="password" name="confirm" autocomplete="new-password" minlength="8" required />
+            </label>
+            <button type="submit" class="btn btn-block">Save and log in</button>
+          </form>
+        <% } %>
+
+        <a href="/admin/login" class="login-back">Back to login</a>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

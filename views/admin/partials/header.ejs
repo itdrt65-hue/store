@@ -12,6 +12,7 @@
       </nav>
       <div class="admin-sidebar-footer">
         <a href="/" target="_blank" rel="noopener"><%- include('icon', { name: 'external' }) %>View website</a>
+        <a href="/admin/account"><%- include('icon', { name: 'customers' }) %>Account</a>
         <form action="/admin/logout" method="POST">
           <button type="submit" class="admin-logout-btn"><%- include('icon', { name: 'logout' }) %>Log out</button>
         </form>

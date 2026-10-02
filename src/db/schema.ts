@@ -84,6 +84,17 @@ export const vendorPurchases = sqliteTable("vendor_purchases", {
     .default(sql`(current_timestamp)`),
 });
 
+// Single-row table (id = 1) holding the admin login. Takes priority over the
+// ADMIN_USERNAME / ADMIN_PASSWORD_HASH env vars, which remain as a fallback.
+export const adminAccount = sqliteTable("admin_account", {
+  id: integer("id").primaryKey(),
+  username: text("username").notNull(),
+  passwordHash: text("password_hash").notNull(),
+  updatedAt: text("updated_at")
+    .notNull()
+    .default(sql`(current_timestamp)`),
+});
+
 export type Customer = typeof customers.$inferSelect;
 export type NewCustomer = typeof customers.$inferInsert;
 export type Product = typeof products.$inferSelect;
