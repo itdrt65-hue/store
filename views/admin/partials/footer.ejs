@@ -1,0 +1,24 @@
+      </main>
+    </div>
+
+    <nav class="admin-tabbar" aria-label="Admin">
+      <%- include('nav-links', { active: active, tab: true }) %>
+    </nav>
+  </div>
+  <script>
+    document.querySelectorAll("[data-filter]").forEach(function (input) {
+      var panel = input.closest(".admin-panel");
+      var rows = panel.querySelectorAll("tbody tr");
+      var none = panel.querySelector(".filter-empty");
+      input.addEventListener("input", function () {
+        var q = input.value.trim().toLowerCase(), shown = 0;
+        rows.forEach(function (r) {
+          var hit = !q || r.textContent.toLowerCase().indexOf(q) > -1;
+          r.hidden = !hit; if (hit) shown++;
+        });
+        if (none) none.hidden = shown > 0;
+      });
+    });
+  </script>
+</body>
+</html>

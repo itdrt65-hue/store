@@ -1,0 +1,49 @@
+<%- include('../partials/header') %>
+
+<div class="admin-page-head admin-page-head-row">
+  <div>
+    <h1>Products</h1>
+    <p>The cylinders you sell, and what shows on your website.</p>
+  </div>
+  <a href="/admin/products/new" class="btn"><%- include('../partials/icon', { name: 'plus' }) %>Add product</a>
+</div>
+
+<% if (msg) { %><div class="admin-alert admin-alert-success" role="status"><%= msg %></div><% } %>
+
+<section class="admin-panel">
+  <% if (products.length === 0) { %>
+    <div class="empty-state">
+      <span class="empty-icon"><%- include('../partials/icon', { name: 'products' }) %></span>
+      <h2>No products yet</h2>
+      <p>Add your first cylinder to show it on the website and sell it here.</p>
+      <a href="/admin/products/new" class="btn btn-small">Add product</a>
+    </div>
+  <% } else { %>
+    <div class="panel-bar">
+      <h2><%= products.length %> product<%= products.length === 1 ? '' : 's' %></h2>
+      <label class="search"><%- include('../partials/icon', { name: 'search' }) %><input type="search" data-filter placeholder="Search products" aria-label="Search products" /></label>
+    </div>
+    <table class="admin-table">
+      <thead><tr><th>Name</th><th>Description</th><th class="num">Price</th><th>Stock</th><th></th></tr></thead>
+      <tbody>
+        <% products.forEach(function(p) { %>
+          <tr>
+            <td data-label="Name" class="cell-main"><strong><%= p.name %></strong></td>
+            <td data-label="Description" class="admin-muted"><%= p.description || '—' %></td>
+            <td data-label="Price" class="num">Rs. <%= p.price.toLocaleString('en-IN', { minimumFractionDigits: 2 }) %></td>
+            <td data-label="Stock"><span class="badge <%= p.stock === 0 ? 'badge-cancelled' : p.stock < 5 ? 'badge-warn' : 'badge-ok' %>"><%= p.stock %></span></td>
+            <td class="admin-row-actions">
+              <a href="/admin/products/<%= p.id %>/edit">Edit</a>
+              <form action="/admin/products/<%= p.id %>/delete" method="POST" onsubmit="return confirm('Delete this product?');">
+                <button type="submit" class="admin-link-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <p class="filter-empty" hidden>No products match your search.</p>
+  <% } %>
+</section>
+
+<%- include('../partials/footer') %>

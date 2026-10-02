@@ -1,0 +1,429 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "id": "27169eb2-63f1-4cdd-98e4-a83b7f6fdaf3",
+  "prevIds": [
+    "d90b4cf7-cf97-45d2-a60f-7d83baa3179b"
+  ],
+  "ddl": [
+    {
+      "name": "customers",
+      "entityType": "tables"
+    },
+    {
+      "name": "orders",
+      "entityType": "tables"
+    },
+    {
+      "name": "products",
+      "entityType": "tables"
+    },
+    {
+      "name": "vendor_purchases",
+      "entityType": "tables"
+    },
+    {
+      "name": "vendors",
+      "entityType": "tables"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": true,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "customers"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "name",
+      "entityType": "columns",
+      "table": "customers"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "phone",
+      "entityType": "columns",
+      "table": "customers"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "address",
+      "entityType": "columns",
+      "table": "customers"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "(current_timestamp)",
+      "generated": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "table": "customers"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": true,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "orders"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "customer_id",
+      "entityType": "columns",
+      "table": "orders"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "product_id",
+      "entityType": "columns",
+      "table": "orders"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "1",
+      "generated": null,
+      "name": "quantity",
+      "entityType": "columns",
+      "table": "orders"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "'pending'",
+      "generated": null,
+      "name": "status",
+      "entityType": "columns",
+      "table": "orders"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "(current_timestamp)",
+      "generated": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "table": "orders"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": true,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "products"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "name",
+      "entityType": "columns",
+      "table": "products"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "description",
+      "entityType": "columns",
+      "table": "products"
+    },
+    {
+      "type": "real",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "price",
+      "entityType": "columns",
+      "table": "products"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "0",
+      "generated": null,
+      "name": "stock",
+      "entityType": "columns",
+      "table": "products"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "(current_timestamp)",
+      "generated": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "table": "products"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": true,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "vendor_purchases"
+    },
+    {
+      "type": "integer",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "vendor_id",
+      "entityType": "columns",
+      "table": "vendor_purchases"
+    },
+    {
+      "type": "real",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "amount",
+      "entityType": "columns",
+      "table": "vendor_purchases"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "cylinders",
+      "entityType": "columns",
+      "table": "vendor_purchases"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "purchased_on",
+      "entityType": "columns",
+      "table": "vendor_purchases"
+    },
+    {
+      "type": "text",
+      "notNull": false,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "note",
+      "entityType": "columns",
+      "table": "vendor_purchases"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "(current_timestamp)",
+      "generated": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "table": "vendor_purchases"
+    },
+    {
+      "type": "integer",
+      "notNull": false,
+      "autoincrement": true,
+      "default": null,
+      "generated": null,
+      "name": "id",
+      "entityType": "columns",
+      "table": "vendors"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "name",
+      "entityType": "columns",
+      "table": "vendors"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "pan_number",
+      "entityType": "columns",
+      "table": "vendors"
+    },
+    {
+      "type": "real",
+      "notNull": true,
+      "autoincrement": false,
+      "default": null,
+      "generated": null,
+      "name": "yearly_limit",
+      "entityType": "columns",
+      "table": "vendors"
+    },
+    {
+      "type": "text",
+      "notNull": true,
+      "autoincrement": false,
+      "default": "(current_timestamp)",
+      "generated": null,
+      "name": "created_at",
+      "entityType": "columns",
+      "table": "vendors"
+    },
+    {
+      "columns": [
+        "customer_id"
+      ],
+      "tableTo": "customers",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "fk_orders_customer_id_customers_id_fk",
+      "entityType": "fks",
+      "table": "orders"
+    },
+    {
+      "columns": [
+        "product_id"
+      ],
+      "tableTo": "products",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "nameExplicit": false,
+      "name": "fk_orders_product_id_products_id_fk",
+      "entityType": "fks",
+      "table": "orders"
+    },
+    {
+      "columns": [
+        "vendor_id"
+      ],
+      "tableTo": "vendors",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "CASCADE",
+      "nameExplicit": false,
+      "name": "fk_vendor_purchases_vendor_id_vendors_id_fk",
+      "entityType": "fks",
+      "table": "vendor_purchases"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "customers_pk",
+      "table": "customers",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "orders_pk",
+      "table": "orders",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "products_pk",
+      "table": "products",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "vendor_purchases_pk",
+      "table": "vendor_purchases",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "name": "vendors_pk",
+      "table": "vendors",
+      "entityType": "pks"
+    },
+    {
+      "columns": [
+        "phone"
+      ],
+      "nameExplicit": false,
+      "name": "customers_phone_unique",
+      "entityType": "uniques",
+      "table": "customers"
+    },
+    {
+      "columns": [
+        "pan_number"
+      ],
+      "nameExplicit": false,
+      "name": "vendors_pan_number_unique",
+      "entityType": "uniques",
+      "table": "vendors"
+    }
+  ],
+  "renames": []
+}

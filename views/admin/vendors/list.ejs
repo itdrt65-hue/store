@@ -1,0 +1,56 @@
+<%- include('../partials/header') %>
+
+<div class="admin-page-head admin-page-head-row">
+  <div>
+    <h1>Vendors</h1>
+    <p>Yearly purchase limits for <%= year %>. Stay under the limit to avoid a fine.</p>
+  </div>
+  <a href="/admin/vendors/new" class="btn"><%- include('../partials/icon', { name: 'plus' }) %>Add vendor</a>
+</div>
+
+<% if (msg) { %><div class="admin-alert admin-alert-success" role="status"><%= msg %></div><% } %>
+
+<section class="admin-panel">
+  <% if (usage.length === 0) { %>
+    <div class="empty-state">
+      <span class="empty-icon"><%- include('../partials/icon', { name: 'vendors' }) %></span>
+      <h2>No vendors yet</h2>
+      <p>Add a vendor with its yearly limit and you'll be warned before you cross it.</p>
+      <a href="/admin/vendors/new" class="btn btn-small">Add vendor</a>
+    </div>
+  <% } else { %>
+    <table class="admin-table">
+      <thead><tr><th>Vendor</th><th class="num">Purchased</th><th class="num">Yearly limit</th><th class="num">Remaining</th><th class="col-usage">Used</th><th></th></tr></thead>
+      <tbody>
+        <% usage.forEach(function(u) { %>
+          <tr>
+            <td data-label="Vendor" class="cell-main">
+              <strong><%= u.name %></strong>
+              <div class="admin-muted">PAN <%= u.panNumber %><% if (u.cylinders > 0) { %> · <%= u.cylinders.toLocaleString('en-IN') %> cylinders<% } %></div>
+            </td>
+            <td data-label="Purchased" class="num">Rs. <%= u.purchased.toLocaleString('en-IN') %></td>
+            <td data-label="Yearly limit" class="num">Rs. <%= u.yearlyLimit.toLocaleString('en-IN') %></td>
+            <td data-label="Remaining" class="num meter-num-<%= u.level %>"><strong><%= u.level === 'over' ? '−' : '' %>Rs. <%= Math.abs(u.remaining).toLocaleString('en-IN') %></strong></td>
+            <td data-label="Used" class="col-usage">
+              <div class="usage">
+                <div class="meter meter-<%= u.level %>" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="<%= Math.min(u.percent, 100) %>"><div class="meter-fill" style="width: <%= Math.min(u.percent, 100) %>%"></div></div>
+                <span class="usage-pct meter-num-<%= u.level %>"><%= u.percent %>%</span>
+              </div>
+              <% if (u.level === 'over') { %><div class="usage-note usage-over">Limit crossed — fine applies</div>
+              <% } else if (u.level === 'warn') { %><div class="usage-note usage-warn">Close to the limit</div><% } %>
+            </td>
+            <td class="admin-row-actions">
+              <a href="/admin/vendors/<%= u.id %>/purchases" class="btn btn-small btn-quiet">Add purchase</a>
+              <a href="/admin/vendors/<%= u.id %>/edit">Edit</a>
+              <form action="/admin/vendors/<%= u.id %>/delete" method="POST" onsubmit="return confirm('Delete this vendor and all its purchase records?');">
+                <button type="submit" class="admin-link-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } %>
+</section>
+
+<%- include('../partials/footer') %>

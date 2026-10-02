@@ -1,0 +1,110 @@
+<%- include('partials/header') %>
+
+<div class="admin-page-head admin-page-head-row">
+  <div>
+    <h1>Dashboard</h1>
+    <p><%= new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) %></p>
+  </div>
+  <a href="/admin/sales/new" class="btn"><%- include('partials/icon', { name: 'plus' }) %>Record sale</a>
+</div>
+
+<% vendorAlerts.forEach(function(u) { %>
+  <a href="/admin/vendors/<%= u.id %>/purchases" class="admin-alert <%= u.level === 'over' ? 'admin-alert-error' : 'admin-alert-warn' %> dashboard-alert">
+    <%- include('partials/icon', { name: 'alert' }) %>
+    <span>
+      <strong><%= u.name %></strong>
+      <%= u.level === 'over' ? 'is over its yearly limit by Rs. ' + (-u.remaining).toLocaleString('en-IN') + '. A fine applies.' : 'has only Rs. ' + u.remaining.toLocaleString('en-IN') + ' of Rs. ' + u.yearlyLimit.toLocaleString('en-IN') + ' left this year (' + u.percent + '% used).' %>
+    </span>
+    <%- include('partials/icon', { name: 'arrow' }) %>
+  </a>
+<% }); %>
+
+<section class="kpi-strip" aria-label="Today at a glance">
+  <a class="kpi kpi-primary" href="/admin/sales">
+    <span class="kpi-label">Today's sales</span>
+    <span class="kpi-value"><small>Rs.</small> <%= stats.todayTotal.toLocaleString('en-IN') %></span>
+    <span class="kpi-foot"><%= stats.todayCount %> sale<%= stats.todayCount === 1 ? '' : 's' %> recorded</span>
+  </a>
+  <a class="kpi <%= stats.dueTotal > 0 ? 'kpi-warn' : '' %>" href="/admin/sales">
+    <span class="kpi-label">Yet to receive</span>
+    <span class="kpi-value"><small>Rs.</small> <%= stats.dueTotal.toLocaleString('en-IN') %></span>
+    <span class="kpi-foot">Sold on credit</span>
+  </a>
+  <a class="kpi" href="/admin/orders">
+    <span class="kpi-label">Pending orders</span>
+    <span class="kpi-value"><%= stats.pendingCount %></span>
+    <span class="kpi-foot">of <%= stats.orderCount %> total</span>
+  </a>
+  <a class="kpi <%= stats.lowStockCount > 0 ? 'kpi-warn' : '' %>" href="/admin/stock">
+    <span class="kpi-label">Running low</span>
+    <span class="kpi-value"><%= stats.lowStockCount %></span>
+    <span class="kpi-foot">below 5 units</span>
+  </a>
+</section>
+
+<div class="split">
+  <section class="admin-panel">
+    <div class="panel-bar">
+      <div>
+        <h2>Sales, last 7 days</h2>
+        <span class="panel-sub">Rs. <%= weekTotal.toLocaleString('en-IN') %> in total</span>
+      </div>
+    </div>
+    <% var peak = Math.max.apply(null, week.map(function(d) { return d.total; }).concat([1])); %>
+    <div class="chart" role="img" aria-label="Daily sales for the last 7 days">
+      <% week.forEach(function(d, i) { %>
+        <div class="chart-col <%= d.today ? 'is-today' : '' %>" style="--i: <%= i %>">
+          <span class="chart-val"><%= d.total > 0 ? (d.total >= 1000 ? (d.total / 1000).toFixed(d.total % 1000 === 0 ? 0 : 1) + 'k' : d.total) : '' %></span>
+          <div class="chart-bar" style="height: <%= Math.max(d.total / peak * 100, d.total > 0 ? 4 : 0) %>%" title="<%= d.date %>: Rs. <%= d.total.toLocaleString('en-IN') %>"></div>
+          <span class="chart-day"><%= d.today ? 'Today' : d.label %></span>
+        </div>
+      <% }); %>
+    </div>
+  </section>
+
+  <section class="admin-panel">
+    <div class="panel-bar">
+      <h2>Needs restocking</h2>
+      <a href="/admin/stock" class="admin-panel-link">Open stock</a>
+    </div>
+    <% if (lowStock.length === 0) { %>
+      <p class="admin-empty">Everything is well stocked.</p>
+    <% } else { %>
+      <ul class="rows">
+        <% lowStock.forEach(function(p) { %>
+          <li>
+            <a href="/admin/stock"><span><%= p.name %></span>
+              <span class="badge <%= p.stock === 0 ? 'badge-cancelled' : 'badge-warn' %>"><%= p.stock === 0 ? 'Out of stock' : p.stock + ' left' %></span></a>
+          </li>
+        <% }); %>
+      </ul>
+    <% } %>
+  </section>
+</div>
+
+<section class="admin-panel">
+  <div class="panel-bar">
+    <h2>Recent sales</h2>
+    <a href="/admin/sales" class="admin-panel-link">View all</a>
+  </div>
+  <% if (recentSales.length === 0) { %>
+    <p class="admin-empty">No sales yet. <a href="/admin/sales/new">Record the first one</a>.</p>
+  <% } else { %>
+    <table class="admin-table">
+      <thead><tr><th>Date</th><th>Product</th><th class="num">Qty</th><th class="num">Total</th><th>Payment</th></tr></thead>
+      <tbody>
+        <% recentSales.forEach(function(s) { %>
+          <tr>
+            <td data-label="Date" class="admin-muted"><%= s.soldOn %></td>
+            <td data-label="Product" class="cell-main"><%= s.productName %></td>
+            <td data-label="Qty" class="num"><%= s.quantity %></td>
+            <td data-label="Total" class="num"><strong>Rs. <%= s.total.toLocaleString('en-IN') %></strong></td>
+            <td data-label="Payment"><span class="badge <%= s.payment === 'due' ? 'badge-pending' : 'badge-ok' %>"><%= s.payment === 'due' ? 'Due' : 'Paid' %></span></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  <% } %>
+</section>
+
+<%- include('partials/footer') %>

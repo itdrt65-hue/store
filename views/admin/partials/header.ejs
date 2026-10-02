@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('head') %>
+</head>
+<body class="admin-body">
+  <div class="admin-shell">
+    <aside class="admin-sidebar">
+      <a href="/admin" class="admin-logo"><span class="admin-logo-mark"><%- include('icon', { name: 'flame' }) %></span><span class="admin-logo-text">Agrahari Gas</span></a>
+      <nav class="admin-nav" aria-label="Admin">
+        <%- include('nav-links', { active: active, tab: false }) %>
+      </nav>
+      <div class="admin-sidebar-footer">
+        <a href="/" target="_blank" rel="noopener"><%- include('icon', { name: 'external' }) %>View website</a>
+        <form action="/admin/logout" method="POST">
+          <button type="submit" class="admin-logout-btn"><%- include('icon', { name: 'logout' }) %>Log out</button>
+        </form>
+      </div>
+    </aside>
+
+    <div class="admin-content">
+      <header class="admin-topbar">
+        <a href="/admin" class="admin-logo"><span class="admin-logo-mark"><%- include('icon', { name: 'flame' }) %></span><span class="admin-logo-text">Agrahari Gas</span></a>
+        <a href="/" target="_blank" rel="noopener" class="icon-btn" aria-label="View website"><%- include('icon', { name: 'external' }) %></a>
+      </header>
+      <main class="admin-main">

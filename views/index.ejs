@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('partials/head') %>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <span>📍 Serving all of Palpa District, Nepal</span>
+      <a href="#" role="button" data-copy="+977-9847374696">📞 +977-9847374696 &middot; Order a Refill Now</a>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="logo">🔥 Agrahari <span>Gas</span></a>
+      <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+      <label for="nav-toggle" class="nav-toggle-label" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </label>
+      <nav>
+        <a href="#products">Products</a>
+        <a href="#why-us">Why Us</a>
+        <a href="#service-area">Service Area</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <a href="#" role="button" data-copy="+977-9847374696" class="btn btn-small header-cta">Call Now</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <span class="eyebrow">✅ Authorized LPG Gas Dealer</span>
+        <h1>Genuine LPG Gas,<br />Delivered Across Palpa</h1>
+        <p>
+          Agrahari Gas is a government-authorized LPG dealer supplying safe, genuine
+          cylinder refills to homes, hotels and businesses throughout Palpa district —
+          from Tansen to every rural municipality around it.
+        </p>
+        <div class="hero-actions">
+          <a href="#" role="button" data-copy="+977-9847374696" class="btn">📞 Call to Order</a>
+          <a href="#products" class="btn btn-outline">View Products</a>
+        </div>
+        <div class="hero-badges">
+          <div class="hero-badge"><strong>10+</strong><span>Years serving Palpa</span></div>
+          <div class="hero-badge"><strong>100%</strong><span>Genuine &amp; sealed cylinders</span></div>
+          <div class="hero-badge"><strong>Same-day</strong><span>Home delivery</span></div>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <div class="flame-glow"></div>
+        <svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg" class="cylinder-svg">
+          <rect x="70" y="20" width="60" height="18" rx="6" fill="#78350f"/>
+          <rect x="85" y="4" width="30" height="20" rx="4" fill="#78350f"/>
+          <rect x="40" y="38" width="120" height="200" rx="18" fill="#f97316"/>
+          <rect x="40" y="38" width="120" height="200" rx="18" fill="url(#grad)"/>
+          <rect x="52" y="70" width="96" height="40" rx="6" fill="#fff7ed" opacity="0.9"/>
+          <text x="100" y="96" text-anchor="middle" font-family="Poppins, sans-serif" font-weight="700" font-size="16" fill="#c2410c">AGRAHARI</text>
+          <defs>
+            <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#fb923c"/>
+              <stop offset="100%" stop-color="#c2410c"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="trust-bar">
+    <div class="container trust-bar-inner">
+      <div class="trust-item">
+        <span class="trust-icon">🛡️</span>
+        <div><strong>Authorized Dealer</strong><small>Government-licensed LPG distributor</small></div>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">🚚</span>
+        <div><strong>Fast Delivery</strong><small>Same-day delivery across Palpa</small></div>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">⚖️</span>
+        <div><strong>Fair Pricing</strong><small>Government-regulated rates, no overcharging</small></div>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">🔥</span>
+        <div><strong>Safety Checked</strong><small>Every cylinder leak-tested before dispatch</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="products" class="container section">
+    <div class="section-head">
+      <span class="eyebrow">Our Products</span>
+      <h2>Cylinders for Every Need</h2>
+      <p class="section-sub">From household kitchens to commercial hotels, we stock the sizes Palpa depends on.</p>
+    </div>
+    <% if (products.length === 0) { %>
+      <p class="empty">No products available yet. Please check back soon.</p>
+    <% } else { %>
+      <div class="product-grid">
+        <% products.forEach(function(product) { %>
+          <div class="product-card">
+            <div class="product-icon">🛢️</div>
+            <h3><%= product.name %></h3>
+            <p class="description"><%= product.description %></p>
+            <p class="price">Rs. <%= product.price.toFixed(2) %></p>
+            <p class="stock <%= product.stock > 0 ? 'in-stock' : 'out-of-stock' %>">
+              <%= product.stock > 0 ? product.stock + ' in stock' : 'Out of stock' %>
+            </p>
+            <a href="#" role="button" data-copy="+977-9847374696" class="btn btn-small btn-block">Order This</a>
+          </div>
+        <% }); %>
+      </div>
+    <% } %>
+  </section>
+
+  <section id="why-us" class="section alt-bg">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Why Choose Us</span>
+        <h2>Palpa's Trusted Gas Supplier</h2>
+      </div>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">✅</div>
+          <h3>Fully Authorized</h3>
+          <p>Licensed and authorized LPG dealer, operating under official safety and pricing regulations.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🚚</div>
+          <h3>Reliable Delivery</h3>
+          <p>Door-to-door delivery across Tansen and surrounding municipalities, usually within the same day.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔧</div>
+          <h3>Safety First</h3>
+          <p>Every cylinder is inspected and leak-tested before it leaves our warehouse.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🏪</div>
+          <h3>Household &amp; Bulk Supply</h3>
+          <p>Whether it's one cylinder for your kitchen or bulk supply for your hotel or restaurant, we've got you covered.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💰</div>
+          <h3>Fair, Regulated Pricing</h3>
+          <p>No overcharging — every refill is priced according to government-set rates.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📞</div>
+          <h3>Easy to Reach</h3>
+          <p>Just call or WhatsApp your order — no complicated forms, no waiting in line.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="service-area" class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Service Area</span>
+        <h2>We Deliver Across All of Palpa</h2>
+        <p class="section-sub">Based in Tansen, our delivery network covers every municipality in the district.</p>
+      </div>
+      <div class="area-chips">
+        <span class="chip">Tansen Municipality</span>
+        <span class="chip">Rampur Municipality</span>
+        <span class="chip">Rainadevi Chhahara</span>
+        <span class="chip">Ripdikot</span>
+        <span class="chip">Bagnaskali</span>
+        <span class="chip">Rambha</span>
+        <span class="chip">Purbakhola</span>
+        <span class="chip">Nisdi</span>
+        <span class="chip">Mathagadi</span>
+        <span class="chip">Tinahu</span>
+      </div>
+      <p class="area-note">Not sure if we deliver to your area? <a href="#" role="button" data-copy="+977-9847374696">Give us a call</a> — we're happy to check.</p>
+    </div>
+  </section>
+
+  <section id="how-it-works" class="section alt-bg">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">How It Works</span>
+        <h2>Ordering a Refill Is Simple</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Call or WhatsApp Us</h3>
+          <p>Reach out with your cylinder size and delivery address.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>We Confirm &amp; Schedule</h3>
+          <p>We confirm availability and schedule same-day or next-day delivery.</p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Delivered to Your Door</h3>
+          <p>Our team delivers and safely connects your cylinder, right at your doorstep.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section testimonials">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">What Our Customers Say</span>
+        <h2>Trusted by Families &amp; Businesses in Palpa</h2>
+      </div>
+      <div class="testimonial-grid">
+        <div class="testimonial-card">
+          <p>"Always on time and the staff are careful with handling. We've used Agrahari Gas for years."</p>
+          <strong>— Sita R., Tansen</strong>
+        </div>
+        <div class="testimonial-card">
+          <p>"As a small hotel owner, reliable bulk supply matters a lot. They've never let us down."</p>
+          <strong>— Bikash T., Rampur</strong>
+        </div>
+        <div class="testimonial-card">
+          <p>"Fair pricing and quick delivery even to our village. Highly recommended."</p>
+          <strong>— Maya G., Ripdikot</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-banner">
+    <div class="container cta-inner">
+      <div>
+        <h2>Need a Refill Today?</h2>
+        <p>Call now and we'll get your cylinder delivered — fast, safe, and genuine.</p>
+      </div>
+      <a href="#" role="button" data-copy="+977-9847374696" class="btn btn-light">📞 +977-9847374696</a>
+    </div>
+  </section>
+
+  <footer id="contact" class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a href="/" class="logo footer-logo">🔥 Agrahari <span>Gas</span></a>
+        <p class="footer-tagline">Authorized LPG gas dealer serving households and businesses across Palpa district.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <a href="#products">Products</a>
+        <a href="#why-us">Why Us</a>
+        <a href="#service-area">Service Area</a>
+        <a href="#how-it-works">How It Works</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <p>📍 Tansen, Palpa, Lumbini Province, Nepal</p>
+        <p>📞 <a href="#" role="button" data-copy="+977-9847374696">977-9847374696</a></p>
+        <p>✉️ <a href="mailto:info@agraharigas.com">info@agraharigas.com</a></p>
+        <p>🕒 Sun–Fri, 7:00 AM – 7:00 PM</p>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <p>&copy; <%= new Date().getFullYear() %> Agrahari Gas. All rights reserved. Authorized LPG Dealer, Palpa District.</p>
+    </div>
+  </footer>
+
+  <div class="copy-toast" id="copy-toast" role="status" aria-live="polite"></div>
+  <script>
+    (function () {
+      var toast = document.getElementById("copy-toast"), timer;
+      function show(msg) {
+        toast.textContent = msg;
+        toast.classList.add("show");
+        clearTimeout(timer);
+        timer = setTimeout(function () { toast.classList.remove("show"); }, 2200);
+      }
+      function fallback(text) {
+        var t = document.createElement("textarea");
+        t.value = text; t.style.position = "fixed"; t.style.opacity = "0";
+        document.body.appendChild(t); t.select();
+        try { document.execCommand("copy"); } catch (e) {}
+        document.body.removeChild(t);
+      }
+      document.addEventListener("click", function (e) {
+        var el = e.target.closest("[data-copy]");
+        if (!el) return;
+        e.preventDefault();
+        var text = el.getAttribute("data-copy");
+        var done = function () { show("Number copied: " + text); };
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(text).then(done, function () { fallback(text); done(); });
+        } else { fallback(text); done(); }
+      });
+    })();
+  </script>
+  <style>.nav-toggle{display:none}</style>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<%- include('../partials/header') %>
+
+<div class="admin-page-head">
+  <a href="/admin/customers" class="admin-back-link"><%- include('../partials/icon', { name: 'back' }) %>Back to customers</a>
+  <h1><%= customer && customer.id ? 'Edit Customer' : 'New Customer' %></h1>
+</div>
+
+<% if (error) { %>
+  <div class="admin-alert admin-alert-error"><%= error %></div>
+<% } %>
+
+<div class="admin-panel admin-panel-narrow">
+  <form method="POST" action="<%= customer && customer.id ? '/admin/customers/' + customer.id : '/admin/customers' %>" class="admin-form">
+    <label>
+      Full Name
+      <input type="text" name="name" value="<%= customer ? customer.name || '' : '' %>" required />
+    </label>
+    <label>
+      Phone Number
+      <input type="text" name="phone" value="<%= customer ? customer.phone || '' : '' %>" required />
+    </label>
+    <label>
+      Address
+      <textarea name="address" rows="3" required><%= customer ? customer.address || '' : '' %></textarea>
+    </label>
+    <button type="submit" class="btn"><%= customer && customer.id ? 'Save Changes' : 'Add Customer' %></button>
+  </form>
+</div>
+
+<%- include('../partials/footer') %>

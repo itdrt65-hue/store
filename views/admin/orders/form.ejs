@@ -1,0 +1,61 @@
+<%- include('../partials/header') %>
+
+<div class="admin-page-head">
+  <a href="/admin/orders" class="admin-back-link"><%- include('../partials/icon', { name: 'back' }) %>Back to orders</a>
+  <h1>New Order</h1>
+</div>
+
+<% if (error) { %>
+  <div class="admin-alert admin-alert-error"><%= error %></div>
+<% } %>
+
+<div class="admin-panel admin-panel-narrow">
+  <% if (customers.length === 0 || products.length === 0) { %>
+    <p class="admin-empty">
+      <% if (customers.length === 0) { %>You need at least one <a href="/admin/customers/new">customer</a>. <% } %>
+      <% if (products.length === 0) { %>You need at least one <a href="/admin/products/new">product</a>. <% } %>
+    </p>
+  <% } else { %>
+    <form method="POST" action="/admin/orders" class="admin-form">
+      <label>
+        Customer
+        <select name="customerId" required>
+          <option value="">Select a customer…</option>
+          <% customers.forEach(function(c) { %>
+            <option value="<%= c.id %>" <%= formData && Number(formData.customerId) === c.id ? 'selected' : '' %>>
+              <%= c.name %> (<%= c.phone %>)
+            </option>
+          <% }); %>
+        </select>
+      </label>
+      <label>
+        Product
+        <select name="productId" required>
+          <option value="">Select a product…</option>
+          <% products.forEach(function(p) { %>
+            <option value="<%= p.id %>" <%= formData && Number(formData.productId) === p.id ? 'selected' : '' %>>
+              <%= p.name %> — Rs. <%= p.price.toFixed(2) %>
+            </option>
+          <% }); %>
+        </select>
+      </label>
+      <div class="admin-form-row">
+        <label>
+          Quantity
+          <input type="number" min="1" name="quantity" value="<%= formData ? formData.quantity || 1 : 1 %>" required />
+        </label>
+        <label>
+          Status
+          <select name="status">
+            <% statuses.forEach(function(s) { %>
+              <option value="<%= s %>" <%= formData && formData.status === s ? 'selected' : (s === 'pending' ? 'selected' : '') %>><%= s %></option>
+            <% }); %>
+          </select>
+        </label>
+      </div>
+      <button type="submit" class="btn">Create Order</button>
+    </form>
+  <% } %>
+</div>
+
+<%- include('../partials/footer') %>

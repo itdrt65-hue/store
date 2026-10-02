@@ -1,0 +1,9 @@
+<div class="meter meter-<%= u.level %> meter-lg" role="progressbar" aria-valuemin="0" aria-valuemax="<%= u.yearlyLimit %>" aria-valuenow="<%= u.purchased %>">
+  <div class="meter-fill" style="width: <%= Math.min(u.percent, 100) %>%"></div>
+</div>
+<dl class="meter-stats">
+  <div><dt>Purchased</dt><dd>Rs. <%= u.purchased.toLocaleString('en-IN') %></dd></div>
+  <div><dt>Yearly limit</dt><dd>Rs. <%= u.yearlyLimit.toLocaleString('en-IN') %></dd></div>
+  <div><dt><%= u.level === 'over' ? 'Over by' : 'Remaining' %></dt><dd class="meter-num-<%= u.level %>">Rs. <%= Math.abs(u.remaining).toLocaleString('en-IN') %></dd></div>
+</dl>
+<% if (u.cylinders > 0) { %><p class="meter-cyl"><%= u.cylinders.toLocaleString('en-IN') %> cylinders bought this year</p><% } %>

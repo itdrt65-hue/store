@@ -1,0 +1,17 @@
+<%
+var items = [
+  { key: 'dashboard', href: '/admin', label: 'Home', long: 'Dashboard', tab: true },
+  { key: 'sales', href: '/admin/sales', label: 'Sales', long: 'Sales', tab: true },
+  { key: 'stock', href: '/admin/stock', label: 'Stock', long: 'Stock', tab: true },
+  { key: 'orders', href: '/admin/orders', label: 'Orders', long: 'Orders', tab: true },
+  { key: 'products', href: '/admin/products', label: 'Products', long: 'Products', tab: false },
+  { key: 'customers', href: '/admin/customers', label: 'Customers', long: 'Customers', tab: false },
+  { key: 'vendors', href: '/admin/vendors', label: 'Vendors', long: 'Vendors', tab: false }
+];
+if (tab) items.push({ key: 'more', href: '/admin/more', label: 'More', long: 'More', tab: true });
+var moreKeys = ['more', 'products', 'customers', 'vendors'];
+items.forEach(function(it) {
+  if (tab && !it.tab) return;
+  var on = active === it.key || (tab && it.key === 'more' && moreKeys.indexOf(active) > -1);
+%><a href="<%= it.href %>" class="<%= on ? 'active' : '' %>"<%- on ? ' aria-current="page"' : '' %>><%- include('icon', { name: it.key }) %><% if (tab) { %><span><%= it.label %></span><% } else { %><%= it.long %><% } %></a>
+<% }); %>

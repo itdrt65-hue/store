@@ -1,0 +1,30 @@
+<%- include('../partials/header') %>
+
+<div class="admin-page-head">
+  <a href="/admin/vendors" class="admin-back-link"><%- include('../partials/icon', { name: 'back' }) %>Back to vendors</a>
+  <h1><%= vendor && vendor.id ? 'Edit Vendor' : 'New Vendor' %></h1>
+</div>
+
+<% if (error) { %>
+  <div class="admin-alert admin-alert-error"><%= error %></div>
+<% } %>
+
+<div class="admin-panel admin-panel-narrow">
+  <form method="POST" action="<%= vendor && vendor.id ? '/admin/vendors/' + vendor.id : '/admin/vendors' %>" class="admin-form">
+    <label>
+      Vendor Name
+      <input type="text" name="name" value="<%= vendor ? vendor.name || '' : '' %>" required />
+    </label>
+    <label>
+      PAN Number
+      <input type="text" name="panNumber" value="<%= vendor ? vendor.panNumber || '' : '' %>" required />
+    </label>
+    <label>
+      Yearly Limit (Rs.)
+      <input type="number" min="1" step="0.01" name="yearlyLimit" value="<%= vendor ? vendor.yearlyLimit || '' : '' %>" required />
+    </label>
+    <button type="submit" class="btn"><%= vendor && vendor.id ? 'Save Changes' : 'Add Vendor' %></button>
+  </form>
+</div>
+
+<%- include('../partials/footer') %>

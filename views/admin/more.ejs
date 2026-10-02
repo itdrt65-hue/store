@@ -1,0 +1,18 @@
+<%- include('partials/header') %>
+
+<div class="admin-page-head">
+  <h1>More</h1>
+  <p>Everything else you manage.</p>
+</div>
+
+<div class="more-list">
+  <a href="/admin/products" class="more-item"><span class="more-icon"><%- include('partials/icon', { name: 'products' }) %></span><span><strong>Products</strong><small>Names, prices and what shows on the website</small></span><%- include('partials/icon', { name: 'arrow' }) %></a>
+  <a href="/admin/customers" class="more-item"><span class="more-icon"><%- include('partials/icon', { name: 'customers' }) %></span><span><strong>Customers</strong><small>Names, phone numbers and addresses</small></span><%- include('partials/icon', { name: 'arrow' }) %></a>
+  <a href="/admin/vendors" class="more-item"><span class="more-icon"><%- include('partials/icon', { name: 'vendors' }) %></span><span><strong>Vendors</strong><small>Yearly purchase limits and purchases</small></span><%- include('partials/icon', { name: 'arrow' }) %></a>
+  <a href="/" target="_blank" rel="noopener" class="more-item"><span class="more-icon"><%- include('partials/icon', { name: 'external' }) %></span><span><strong>View website</strong><small>Opens in a new tab</small></span><%- include('partials/icon', { name: 'arrow' }) %></a>
+  <form action="/admin/logout" method="POST">
+    <button type="submit" class="more-item more-logout"><span class="more-icon"><%- include('partials/icon', { name: 'logout' }) %></span><span><strong>Log out</strong></span></button>
+  </form>
+</div>
+
+<%- include('partials/footer') %>

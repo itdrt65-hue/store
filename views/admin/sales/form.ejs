@@ -1,0 +1,94 @@
+<%- include('../partials/header') %>
+
+<div class="admin-page-head">
+  <a href="/admin/sales" class="admin-back-link"><%- include('../partials/icon', { name: 'back' }) %>Sales</a>
+  <h1>Record sale</h1>
+</div>
+
+<% if (error) { %><div class="admin-alert admin-alert-error" role="alert"><%= error %></div><% } %>
+
+<% if (products.length === 0) { %>
+  <section class="admin-panel"><p class="admin-empty">Add a <a href="/admin/products/new">product</a> first.</p></section>
+<% } else { %>
+  <% var chosen = formData ? Number(formData.productId) : preselect; %>
+  <form method="POST" action="/admin/sales" class="form-split" id="sale-form">
+    <section class="admin-panel admin-form">
+      <label>Product
+        <select name="productId" id="sale-product" required>
+          <option value="">Choose a product…</option>
+          <% products.forEach(function(p) { %>
+            <option value="<%= p.id %>" data-price="<%= p.price %>" data-stock="<%= p.stock %>" data-name="<%= p.name %>" <%= chosen === p.id ? 'selected' : '' %> <%= p.stock === 0 ? 'disabled' : '' %>>
+              <%= p.name %> — <%= p.stock === 0 ? 'out of stock' : p.stock + ' in stock' %>
+            </option>
+          <% }); %>
+        </select>
+      </label>
+
+      <div class="admin-form-row">
+        <label>Quantity
+          <input type="number" name="quantity" id="sale-qty" min="1" step="1" inputmode="numeric" value="<%= formData ? formData.quantity : 1 %>" required />
+        </label>
+        <label>Price per cylinder (Rs.)
+          <input type="number" name="unitPrice" id="sale-price" min="0" step="0.01" inputmode="decimal" value="<%= formData ? formData.unitPrice : '' %>" required />
+        </label>
+      </div>
+
+      <fieldset class="pill-group">
+        <legend>Payment</legend>
+        <label class="pill"><input type="radio" name="payment" value="paid" <%= !formData || formData.payment !== 'due' ? 'checked' : '' %> /><span>Paid now</span></label>
+        <label class="pill"><input type="radio" name="payment" value="due" <%= formData && formData.payment === 'due' ? 'checked' : '' %> /><span>Pay later (credit)</span></label>
+      </fieldset>
+
+      <label><span>Customer <span class="admin-muted">(optional)</span></span>
+        <input type="text" name="customerName" placeholder="Leave empty for walk-in" value="<%= formData ? formData.customerName || '' : '' %>" />
+      </label>
+      <div class="admin-form-row">
+        <label>Date
+          <input type="date" name="soldOn" value="<%= formData ? formData.soldOn : today %>" required />
+        </label>
+        <label><span>Note <span class="admin-muted">(optional)</span></span>
+          <input type="text" name="note" value="<%= formData ? formData.note || '' : '' %>" />
+        </label>
+      </div>
+    </section>
+
+    <aside class="admin-panel sale-summary" aria-live="polite">
+      <h2>Summary</h2>
+      <dl>
+        <div><dt>Product</dt><dd id="sum-product">—</dd></div>
+        <div><dt>In stock</dt><dd id="sum-stock">—</dd></div>
+        <div><dt>Left after sale</dt><dd id="sum-after">—</dd></div>
+      </dl>
+      <div class="sale-total"><span>Total</span><strong id="sale-total">Rs. 0</strong></div>
+      <button type="submit" class="btn btn-block">Save sale</button>
+    </aside>
+  </form>
+  <script>
+    (function () {
+      var sel = document.getElementById("sale-product"), qty = document.getElementById("sale-qty"),
+          price = document.getElementById("sale-price"), total = document.getElementById("sale-total"),
+          sp = document.getElementById("sum-product"), ss = document.getElementById("sum-stock"), sa = document.getElementById("sum-after");
+      function fmt(n) { return "Rs. " + n.toLocaleString("en-IN", { maximumFractionDigits: 2 }); }
+      function calc() {
+        var o = sel.options[sel.selectedIndex], q = Number(qty.value) || 0;
+        total.textContent = fmt(q * (Number(price.value) || 0));
+        if (o && o.dataset.stock) {
+          var left = Number(o.dataset.stock) - q;
+          sp.textContent = o.dataset.name; ss.textContent = o.dataset.stock;
+          sa.textContent = left; sa.className = left < 0 ? "is-bad" : left < 5 ? "is-warn" : "";
+        } else { sp.textContent = ss.textContent = sa.textContent = "—"; sa.className = ""; }
+      }
+      sel.addEventListener("change", function () {
+        var o = sel.options[sel.selectedIndex];
+        if (o && o.dataset.price) { price.value = o.dataset.price; qty.max = o.dataset.stock; }
+        calc();
+      });
+      qty.addEventListener("input", calc); price.addEventListener("input", calc);
+      var o = sel.options[sel.selectedIndex];
+      if (o && o.dataset.price) { if (!price.value) price.value = o.dataset.price; qty.max = o.dataset.stock; }
+      calc();
+    })();
+  </script>
+<% } %>
+
+<%- include('../partials/footer') %>

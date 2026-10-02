@@ -1,0 +1,60 @@
+<%- include('../partials/header') %>
+
+<div class="admin-page-head admin-page-head-row">
+  <div>
+    <h1>Orders</h1>
+    <p>Phone and WhatsApp orders to confirm and deliver.</p>
+  </div>
+  <a href="/admin/orders/new" class="btn"><%- include('../partials/icon', { name: 'plus' }) %>New order</a>
+</div>
+
+<% if (msg) { %><div class="admin-alert admin-alert-success" role="status"><%= msg %></div><% } %>
+
+<section class="admin-panel">
+  <% if (orders.length === 0) { %>
+    <div class="empty-state">
+      <span class="empty-icon"><%- include('../partials/icon', { name: 'orders' }) %></span>
+      <h2>No orders yet</h2>
+      <p>When a customer calls, log the order here and move it along as you deliver.</p>
+      <a href="/admin/orders/new" class="btn btn-small">New order</a>
+    </div>
+  <% } else { %>
+    <div class="panel-bar">
+      <h2><%= orders.length %> order<%= orders.length === 1 ? '' : 's' %></h2>
+      <label class="search"><%- include('../partials/icon', { name: 'search' }) %><input type="search" data-filter placeholder="Search orders" aria-label="Search orders" /></label>
+    </div>
+    <table class="admin-table">
+      <thead><tr><th>Order</th><th>Customer</th><th>Product</th><th class="num">Qty</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        <% orders.forEach(function(o) { %>
+          <tr>
+            <td data-label="Order" class="cell-main"><strong>#<%= o.id %></strong></td>
+            <td data-label="Customer">
+              <strong><%= o.customerName || 'Unknown' %></strong>
+              <div class="admin-muted"><%= o.customerPhone || '' %></div>
+            </td>
+            <td data-label="Product"><%= o.productName || 'Unknown' %></td>
+            <td data-label="Qty" class="num"><%= o.quantity %></td>
+            <td data-label="Status">
+              <form action="/admin/orders/<%= o.id %>/status" method="POST" class="admin-inline-form">
+                <select name="status" onchange="this.form.submit()" class="badge-select badge-<%= o.status %>" aria-label="Status of order <%= o.id %>">
+                  <% statuses.forEach(function(s) { %>
+                    <option value="<%= s %>" <%= s === o.status ? 'selected' : '' %>><%= s %></option>
+                  <% }); %>
+                </select>
+              </form>
+            </td>
+            <td class="admin-row-actions">
+              <form action="/admin/orders/<%= o.id %>/delete" method="POST" onsubmit="return confirm('Delete this order?');">
+                <button type="submit" class="admin-link-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <p class="filter-empty" hidden>No orders match your search.</p>
+  <% } %>
+</section>
+
+<%- include('../partials/footer') %>

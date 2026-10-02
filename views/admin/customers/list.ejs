@@ -1,0 +1,48 @@
+<%- include('../partials/header') %>
+
+<div class="admin-page-head admin-page-head-row">
+  <div>
+    <h1>Customers</h1>
+    <p>Everyone who has ordered from Agrahari Gas.</p>
+  </div>
+  <a href="/admin/customers/new" class="btn"><%- include('../partials/icon', { name: 'plus' }) %>Add customer</a>
+</div>
+
+<% if (msg) { %><div class="admin-alert admin-alert-success" role="status"><%= msg %></div><% } %>
+
+<section class="admin-panel">
+  <% if (customers.length === 0) { %>
+    <div class="empty-state">
+      <span class="empty-icon"><%- include('../partials/icon', { name: 'customers' }) %></span>
+      <h2>No customers yet</h2>
+      <p>Save a customer once and pick them whenever you take an order.</p>
+      <a href="/admin/customers/new" class="btn btn-small">Add customer</a>
+    </div>
+  <% } else { %>
+    <div class="panel-bar">
+      <h2><%= customers.length %> customer<%= customers.length === 1 ? '' : 's' %></h2>
+      <label class="search"><%- include('../partials/icon', { name: 'search' }) %><input type="search" data-filter placeholder="Search name, phone, address" aria-label="Search customers" /></label>
+    </div>
+    <table class="admin-table">
+      <thead><tr><th>Name</th><th>Phone</th><th>Address</th><th></th></tr></thead>
+      <tbody>
+        <% customers.forEach(function(c) { %>
+          <tr>
+            <td data-label="Name" class="cell-main"><strong><%= c.name %></strong></td>
+            <td data-label="Phone"><%= c.phone %></td>
+            <td data-label="Address" class="admin-muted"><%= c.address %></td>
+            <td class="admin-row-actions">
+              <a href="/admin/customers/<%= c.id %>/edit">Edit</a>
+              <form action="/admin/customers/<%= c.id %>/delete" method="POST" onsubmit="return confirm('Delete this customer?');">
+                <button type="submit" class="admin-link-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <p class="filter-empty" hidden>No customers match your search.</p>
+  <% } %>
+</section>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,71 @@
+<%- include('../partials/header') %>
+
+<div class="admin-page-head admin-page-head-row">
+  <div>
+    <h1>Sales</h1>
+    <p>Every cylinder you sell. Stock updates automatically.</p>
+  </div>
+  <a href="/admin/sales/new" class="btn"><%- include('../partials/icon', { name: 'plus' }) %>Record sale</a>
+</div>
+
+<% if (msg) { %><div class="admin-alert admin-alert-success" role="status"><%= msg %></div><% } %>
+
+<section class="kpi-strip kpi-3">
+  <div class="kpi kpi-primary">
+    <span class="kpi-label">Today</span>
+    <span class="kpi-value"><small>Rs.</small> <%= summary.todayTotal.toLocaleString('en-IN') %></span>
+    <span class="kpi-foot"><%= summary.todayCount %> sale<%= summary.todayCount === 1 ? '' : 's' %></span>
+  </div>
+  <div class="kpi">
+    <span class="kpi-label">This month</span>
+    <span class="kpi-value"><small>Rs.</small> <%= summary.monthTotal.toLocaleString('en-IN') %></span>
+    <span class="kpi-foot">Calendar month</span>
+  </div>
+  <div class="kpi <%= summary.dueTotal > 0 ? 'kpi-warn' : '' %>">
+    <span class="kpi-label">Yet to receive</span>
+    <span class="kpi-value"><small>Rs.</small> <%= summary.dueTotal.toLocaleString('en-IN') %></span>
+    <span class="kpi-foot">Sold on credit</span>
+  </div>
+</section>
+
+<section class="admin-panel">
+  <% if (sales.length === 0) { %>
+    <div class="empty-state">
+      <span class="empty-icon"><%- include('../partials/icon', { name: 'sales' }) %></span>
+      <h2>No sales yet</h2>
+      <p>Record your first sale and it will show up here.</p>
+      <a href="/admin/sales/new" class="btn btn-small">Record sale</a>
+    </div>
+  <% } else { %>
+    <div class="panel-bar">
+      <h2>All sales</h2>
+      <label class="search"><%- include('../partials/icon', { name: 'search' }) %><input type="search" data-filter placeholder="Search sales" aria-label="Search sales" /></label>
+    </div>
+    <table class="admin-table">
+      <thead><tr><th>Date</th><th>Product</th><th class="num">Qty × price</th><th class="num">Total</th><th>Customer</th><th>Payment</th><th></th></tr></thead>
+      <tbody>
+        <% sales.forEach(function(s) { %>
+          <tr>
+            <td data-label="Date" class="admin-muted"><%= s.soldOn %></td>
+            <td data-label="Product" class="cell-main"><strong><%= s.productName || 'Deleted product' %></strong></td>
+            <td data-label="Qty × price" class="num"><%= s.quantity %> × Rs. <%= s.unitPrice.toLocaleString('en-IN') %></td>
+            <td data-label="Total" class="num"><strong>Rs. <%= s.total.toLocaleString('en-IN') %></strong></td>
+            <td data-label="Customer" class="admin-muted"><%= s.customerName || 'Walk-in' %></td>
+            <td data-label="Payment"><span class="badge <%= s.payment === 'due' ? 'badge-pending' : 'badge-ok' %>"><%= s.payment === 'due' ? 'Due' : 'Paid' %></span></td>
+            <td class="admin-row-actions">
+              <% if (s.payment === 'due') { %>
+                <form action="/admin/sales/<%= s.id %>/paid" method="POST"><button type="submit" class="link-btn">Mark paid</button></form>
+              <% } %>
+              <form action="/admin/sales/<%= s.id %>/delete" method="POST" onsubmit="return confirm('Delete this sale? The cylinders go back into stock.');">
+                <button type="submit" class="admin-link-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <p class="filter-empty" hidden>No sales match your search.</p>
+  <% } %>
+</section>
+
+<%- include('../partials/footer') %>

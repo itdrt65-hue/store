@@ -1,0 +1,67 @@
+<%- include('../partials/header') %>
+
+<div class="admin-page-head">
+  <a href="/admin/vendors" class="admin-back-link"><%- include('../partials/icon', { name: 'back' }) %>Vendors</a>
+  <h1><%= vendor.name %></h1>
+  <p>PAN <%= vendor.panNumber %></p>
+</div>
+
+<% if (msg) { %><div class="admin-alert admin-alert-success"><%= msg %></div><% } %>
+<% if (error) { %><div class="admin-alert admin-alert-error"><%= error %></div><% } %>
+
+<div class="admin-panel purchase-summary">
+  <div class="admin-panel-head">
+    <h2><%= year %> limit</h2>
+    <span class="vendor-pan">PAN <%= vendor.panNumber %></span>
+  </div>
+  <%- include('_meter', { u: usage }) %>
+</div>
+
+<div class="dashboard-grid purchase-grid">
+  <div class="admin-panel">
+    <div class="panel-bar"><h2>New purchase</h2></div>
+    <form method="POST" action="/admin/vendors/<%= vendor.id %>/purchases" class="admin-form">
+      <label>Amount (Rs.)
+        <input type="number" min="0.01" step="0.01" name="amount" placeholder="e.g. 250000" value="<%= formData ? formData.amount : '' %>" required autofocus />
+      </label>
+      <label><span>Cylinders <span class="admin-muted">(optional)</span></span>
+        <input type="number" min="0" step="1" name="cylinders" placeholder="e.g. 120" value="<%= formData ? formData.cylinders || '' : '' %>" />
+      </label>
+      <label>Purchase date
+        <input type="date" name="purchasedOn" value="<%= formData ? formData.purchasedOn : today %>" required />
+      </label>
+      <label><span>Note <span class="admin-muted">(optional)</span></span>
+        <input type="text" name="note" placeholder="e.g. Bill no. 1042" value="<%= formData ? formData.note || '' : '' %>" />
+      </label>
+      <button type="submit" class="btn">Save purchase</button>
+    </form>
+  </div>
+
+  <div class="admin-panel">
+    <div class="panel-bar"><h2>Purchase history</h2><span class="panel-sub"><%= purchases.length %> total</span></div>
+    <% if (purchases.length === 0) { %>
+      <p class="admin-empty">Nothing recorded yet. Add the first purchase from this vendor.</p>
+    <% } else { %>
+      <table class="admin-table">
+        <thead><tr><th>Date</th><th class="num">Amount</th><th class="num">Cylinders</th><th>Note</th><th></th></tr></thead>
+        <tbody>
+          <% purchases.forEach(function(p) { %>
+            <tr>
+              <td data-label="Date"><%= p.purchasedOn %></td>
+              <td data-label="Amount" class="cell-main num"><strong>Rs. <%= p.amount.toLocaleString('en-IN') %></strong></td>
+              <td data-label="Cylinders" class="num"><%= p.cylinders ?? '—' %></td>
+              <td data-label="Note" class="admin-muted"><%= p.note || '—' %></td>
+              <td class="admin-row-actions">
+                <form action="/admin/vendors/<%= vendor.id %>/purchases/<%= p.id %>/delete" method="POST" onsubmit="return confirm('Delete this purchase?');">
+                  <button type="submit" class="admin-link-danger">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    <% } %>
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

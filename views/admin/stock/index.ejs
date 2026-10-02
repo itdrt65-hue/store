@@ -1,0 +1,63 @@
+<%- include('../partials/header') %>
+
+<div class="admin-page-head admin-page-head-row">
+  <div>
+    <h1>Stock</h1>
+    <p>What's on the shelf right now.</p>
+  </div>
+  <a href="/admin/sales/new" class="btn"><%- include('../partials/icon', { name: 'plus' }) %>Record sale</a>
+</div>
+
+<% if (msg) { %><div class="admin-alert admin-alert-success" role="status"><%= msg %></div><% } %>
+
+<section class="kpi-strip kpi-3">
+  <div class="kpi"><span class="kpi-label">Cylinders in stock</span><span class="kpi-value"><%= totalUnits.toLocaleString('en-IN') %></span><span class="kpi-foot">across <%= products.length %> product<%= products.length === 1 ? '' : 's' %></span></div>
+  <div class="kpi"><span class="kpi-label">Stock value</span><span class="kpi-value"><small>Rs.</small> <%= totalValue.toLocaleString('en-IN') %></span><span class="kpi-foot">At selling price</span></div>
+  <div class="kpi <%= lowCount > 0 ? 'kpi-warn' : '' %>"><span class="kpi-label">Running low</span><span class="kpi-value"><%= lowCount %></span><span class="kpi-foot">below 5 units</span></div>
+</section>
+
+<section class="admin-panel">
+  <% if (products.length === 0) { %>
+    <div class="empty-state">
+      <span class="empty-icon"><%- include('../partials/icon', { name: 'stock' }) %></span>
+      <h2>No products yet</h2>
+      <p>Add a product to start tracking stock.</p>
+      <a href="/admin/products/new" class="btn btn-small">Add product</a>
+    </div>
+  <% } else { %>
+    <% var max = Math.max.apply(null, products.map(function(p) { return p.stock; }).concat([10])); %>
+    <div class="panel-bar">
+      <h2>Products</h2>
+      <label class="search"><%- include('../partials/icon', { name: 'search' }) %><input type="search" data-filter placeholder="Search products" aria-label="Search products" /></label>
+    </div>
+    <table class="admin-table">
+      <thead><tr><th>Product</th><th>In stock</th><th class="num">Unit price</th><th class="num">Value</th><th>Add stock</th><th></th></tr></thead>
+      <tbody>
+        <% products.forEach(function(p) { var lvl = p.stock === 0 ? 'out' : p.stock < 5 ? 'low' : 'ok'; %>
+          <tr>
+            <td data-label="Product" class="cell-main"><strong><%= p.name %></strong></td>
+            <td data-label="In stock">
+              <div class="level">
+                <strong class="level-num level-<%= lvl %>"><%= p.stock %></strong>
+                <div class="meter meter-<%= lvl === 'ok' ? 'ok' : lvl === 'low' ? 'warn' : 'over' %>"><div class="meter-fill" style="width: <%= Math.round(p.stock / max * 100) %>%"></div></div>
+                <span class="badge <%= lvl === 'out' ? 'badge-cancelled' : lvl === 'low' ? 'badge-warn' : 'badge-ok' %>"><%= lvl === 'out' ? 'Out' : lvl === 'low' ? 'Low' : 'OK' %></span>
+              </div>
+            </td>
+            <td data-label="Unit price" class="num">Rs. <%= p.price.toLocaleString('en-IN') %></td>
+            <td data-label="Value" class="num">Rs. <%= (p.price * p.stock).toLocaleString('en-IN') %></td>
+            <td data-label="Add stock">
+              <form action="/admin/stock/<%= p.id %>/add" method="POST" class="stock-add">
+                <input type="number" name="quantity" min="1" step="1" inputmode="numeric" placeholder="Qty" aria-label="Quantity to add to <%= p.name %>" required />
+                <button type="submit" class="btn btn-small btn-quiet">Add</button>
+              </form>
+            </td>
+            <td class="admin-row-actions"><a href="/admin/sales/new?product=<%= p.id %>" class="<%= p.stock === 0 ? 'is-disabled' : '' %>">Sell</a></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <p class="filter-empty" hidden>No products match your search.</p>
+  <% } %>
+</section>
+
+<%- include('../partials/footer') %>
